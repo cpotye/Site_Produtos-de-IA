@@ -183,14 +183,34 @@
     position:relative;padding:160px 0 100px;
     overflow:hidden;
   }
+  /* Mesh gradient animado (CSS @property + keyframes) */
+  @property --m1x { syntax: '<percentage>'; inherits: false; initial-value: 20%; }
+  @property --m1y { syntax: '<percentage>'; inherits: false; initial-value: 20%; }
+  @property --m2x { syntax: '<percentage>'; inherits: false; initial-value: 80%; }
+  @property --m2y { syntax: '<percentage>'; inherits: false; initial-value: 30%; }
+  @property --m3x { syntax: '<percentage>'; inherits: false; initial-value: 50%; }
+  @property --m3y { syntax: '<percentage>'; inherits: false; initial-value: 90%; }
   .hero::before{
     content:"";position:absolute;inset:0;
     background:
-      radial-gradient(60% 50% at 20% 20%,rgba(34,211,238,.10) 0%,transparent 60%),
-      radial-gradient(50% 50% at 80% 30%,rgba(14,165,233,.08) 0%,transparent 65%),
+      radial-gradient(45% 55% at var(--m1x) var(--m1y),rgba(34,211,238,.14) 0%,transparent 60%),
+      radial-gradient(50% 50% at var(--m2x) var(--m2y),rgba(14,165,233,.10) 0%,transparent 65%),
+      radial-gradient(40% 50% at var(--m3x) var(--m3y),rgba(125,211,252,.07) 0%,transparent 70%),
       linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 100%);
     z-index:-1;
+    animation:mesh-drift 24s ease-in-out infinite alternate;
   }
+  @keyframes mesh-drift{
+    0%   { --m1x:15%; --m1y:22%; --m2x:82%; --m2y:28%; --m3x:48%; --m3y:88%; }
+    33%  { --m1x:28%; --m1y:38%; --m2x:72%; --m2y:18%; --m3x:60%; --m3y:78%; }
+    66%  { --m1x:22%; --m1y:14%; --m2x:88%; --m2y:42%; --m3x:38%; --m3y:92%; }
+    100% { --m1x:34%; --m1y:28%; --m2x:76%; --m2y:32%; --m3x:52%; --m3y:82%; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero::before{animation:none}
+  }
+  /* Fallback: browsers sem @property (Firefox < 128, mobile antigos)
+     recebem o gradient estatico do initial-value acima. Sem animacao. */
   .hero-grid{
     display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center;
   }
