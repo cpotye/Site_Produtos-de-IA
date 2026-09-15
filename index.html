@@ -541,6 +541,18 @@
   }
 
   /* Reveal animations */
+  /* Accessibility: skip link (visualmente escondido, aparece no focus) */
+  .skip-link{
+    position:absolute;left:12px;top:12px;
+    background:var(--accent);color:#02121a;
+    padding:10px 14px;border-radius:8px;
+    font-weight:600;font-size:.9rem;
+    z-index:9999;
+    transform:translateY(-160%);
+    transition:transform .18s ease;
+  }
+  .skip-link:focus{transform:translateY(0)}
+
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease, transform .8s ease}
   .reveal.in-view{opacity:1;transform:none}
   .reveal-delay-1{transition-delay:.1s}
@@ -560,6 +572,8 @@
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#top">Pular para o conteudo principal</a>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -1083,14 +1097,14 @@
 
     <div class="reveal">
       <div class="agents-tabs" role="tablist">
-        <button class="agent-tab active" data-tab="comercial">Agente Comercial</button>
-        <button class="agent-tab" data-tab="documentos">Agente de Documentos</button>
-        <button class="agent-tab" data-tab="indicadores">Agente de Indicadores</button>
-        <button class="agent-tab" data-tab="administrativo">Agente Administrativo</button>
-        <button class="agent-tab" data-tab="risco">Agente de Risco</button>
+        <button class="agent-tab active" role="tab" id="tab-comercial" aria-selected="true" aria-controls="panel-comercial" tabindex="0" data-tab="comercial">Agente Comercial</button>
+        <button class="agent-tab" role="tab" id="tab-documentos" aria-selected="false" aria-controls="panel-documentos" tabindex="-1" data-tab="documentos">Agente de Documentos</button>
+        <button class="agent-tab" role="tab" id="tab-indicadores" aria-selected="false" aria-controls="panel-indicadores" tabindex="-1" data-tab="indicadores">Agente de Indicadores</button>
+        <button class="agent-tab" role="tab" id="tab-administrativo" aria-selected="false" aria-controls="panel-administrativo" tabindex="-1" data-tab="administrativo">Agente Administrativo</button>
+        <button class="agent-tab" role="tab" id="tab-risco" aria-selected="false" aria-controls="panel-risco" tabindex="-1" data-tab="risco">Agente de Risco</button>
       </div>
 
-      <div class="agent-panel active" data-panel="comercial">
+      <div class="agent-panel active" role="tabpanel" id="panel-comercial" aria-labelledby="tab-comercial" tabindex="0" data-panel="comercial">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Qualificar oportunidades, responder dúvidas e apoiar o time comercial no dia a dia.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>CRM, catálogo, políticas comerciais, histórico de conversas e documentos de proposta.</p></div>
@@ -1100,7 +1114,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="documentos">
+      <div class="agent-panel" role="tabpanel" id="panel-documentos" aria-labelledby="tab-documentos" tabindex="0" data-panel="documentos">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Ler, comparar e extrair informações de contratos, propostas e documentos técnicos.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>Repositórios de documentos, templates aprovados e cláusulas de referência.</p></div>
@@ -1110,7 +1124,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="indicadores">
+      <div class="agent-panel" role="tabpanel" id="panel-indicadores" aria-labelledby="tab-indicadores" tabindex="0" data-panel="indicadores">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Consolidar indicadores, responder perguntas de negócio e alertar sobre desvios relevantes.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>Bancos de dados, planilhas, dashboards e definições de indicadores validadas.</p></div>
@@ -1120,7 +1134,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="administrativo">
+      <div class="agent-panel" role="tabpanel" id="panel-administrativo" aria-labelledby="tab-administrativo" tabindex="0" data-panel="administrativo">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Automatizar fluxos administrativos e integrar sistemas do dia a dia.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>ERP, planilhas de controle, e-mail, políticas internas e diretórios de arquivos.</p></div>
@@ -1130,7 +1144,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="risco">
+      <div class="agent-panel" role="tabpanel" id="panel-risco" aria-labelledby="tab-risco" tabindex="0" data-panel="risco">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Monitorar transações, cadastros e operações com base em critérios de risco.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>Bases transacionais, políticas de compliance, listas restritivas e histórico de casos.</p></div>
@@ -1345,15 +1359,30 @@
 
   document.querySelectorAll('.reveal, .timeline-step').forEach(el => io.observe(el));
 
-  // Agent Tabs
-  const tabs = document.querySelectorAll('.agent-tab');
-  const panels = document.querySelectorAll('.agent-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+  // Agent Tabs (WAI ARIA: roving tabindex + arrow/Home/End navigation)
+  const tabs = Array.from(document.querySelectorAll('.agent-tab'));
+  const panels = Array.from(document.querySelectorAll('.agent-panel'));
+  function activateTab(tab, focus){
+    tabs.forEach(t => {
+      const on = (t === tab);
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');
+    });
+    panels.forEach(p => {
+      p.classList.toggle('active', p.dataset.panel === tab.dataset.tab);
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => activateTab(tab, false));
+    tab.addEventListener('keydown', (e) => {
+      let next = null;
+      if (e.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next){ e.preventDefault(); activateTab(next, true); }
     });
   });
 
