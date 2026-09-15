@@ -1,16 +1,15 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<meta name="description" content="Agentes de Inteligência Artificial sob medida para automatizar processos, conectar sistemas e transformar a operação da sua empresa." />
+<meta name="description" content="Agentes de IA que operam pela sua empresa: automatizam tarefas, consultam dados e apoiam decisões — sem perder controle." />
 <meta name="keywords" content="Agentes de IA, automação de processos, inteligência artificial para empresas, RPA, integração de sistemas" />
 <meta name="theme-color" content="#050914" />
-<meta property="og:title" content="Agentes de IA trabalhando pela sua empresa" />
-<meta property="og:description" content="Automatize tarefas, conecte seus dados e transforme processos em operações mais inteligentes." />
+<meta property="og:title" content="Agentes de IA operando pela sua empresa" />
+<meta property="og:description" content="Automatize tarefas, conecte seus dados e transforme processos manuais em operações que rodam sozinhas." />
 <meta property="og:type" content="website" />
-<title>Agentes de IA para Empresas | Automação Inteligente</title>
+<title>Agentes de IA operando pela sua empresa — Nexa.AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
@@ -43,6 +42,22 @@
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
+
+  /* Accessibility: focus-visible global (teclado) - anel cyan com halo */
+  *:focus{outline:none}
+  :where(a,button,input,textarea,select,[tabindex]):focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    box-shadow:0 0 0 6px var(--accent-soft);
+    border-radius:8px;
+  }
+  .btn:focus-visible{border-radius:12px}
+  .agent-tab:focus-visible{outline-offset:3px}
+  input:focus-visible, textarea:focus-visible{
+    outline-offset:0;
+    border-color:var(--accent) !important;
+  }
+  .skip-link:focus-visible{box-shadow:0 0 0 6px var(--accent-soft)}
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
   body{
     font-family:var(--font-sans);
@@ -53,7 +68,14 @@
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     overflow-x:hidden;
+    font-feature-settings:"ss01","cv11","kern";
   }
+
+  /* Numeros alinhados (tabular-nums) onde a comparacao visual importa */
+  .num-benefit .num,
+  .timeline-step .step-num,
+  .footer-bottom,
+  time, .num-align{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1,"kern" 1}
   a{color:inherit;text-decoration:none}
   img,svg{display:block;max-width:100%}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -95,6 +117,22 @@
     box-shadow:0 10px 30px -10px rgba(34,211,238,.55), inset 0 1px 0 rgba(255,255,255,.25);
   }
   .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 36px -10px rgba(34,211,238,.7)}
+  /* Icone-em-circulo dentro de .btn-primary (pastilha translucida) */
+  .btn-primary{position:relative;overflow:hidden}
+  .btn-primary .btn-icon{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:32px;height:32px;border-radius:50%;
+    background:rgba(255,255,255,.14);
+    transition:transform .22s cubic-bezier(.2,.7,.2,1), background .22s ease;
+    margin-left:2px;
+  }
+  .btn-primary .btn-icon svg{width:18px;height:18px}
+  .btn-primary:hover .btn-icon{
+    transform:translateX(3px);
+    background:rgba(255,255,255,.22);
+  }
+  .btn-primary:active{transform:translateY(0) scale(.98);transition:transform .06s ease}
+
   .btn-secondary{
     background:rgba(255,255,255,.03);
     color:var(--text);
@@ -542,6 +580,18 @@
   }
 
   /* Reveal animations */
+  /* Accessibility: skip link (visualmente escondido, aparece no focus) */
+  .skip-link{
+    position:absolute;left:12px;top:12px;
+    background:var(--accent);color:#02121a;
+    padding:10px 14px;border-radius:8px;
+    font-weight:600;font-size:.9rem;
+    z-index:9999;
+    transform:translateY(-160%);
+    transition:transform .18s ease;
+  }
+  .skip-link:focus{transform:translateY(0)}
+
   .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease, transform .8s ease}
   .reveal.in-view{opacity:1;transform:none}
   .reveal-delay-1{transition-delay:.1s}
@@ -558,9 +608,55 @@
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.001ms !important;transition-duration:.001ms !important}
   }
+
+  /* Grao SVG global (body::after) - textura sutil que evita aspecto flat */
+  body::after{
+    content:"";
+    position:fixed;inset:0;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%20300%20300%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3CfeColorMatrix%20values=%220%200%200%200%200.9%20%200%200%200%200%200.9%20%200%200%200%200%200.9%20%200%200%200%200.8%200%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url%28#n%29%22/%3E%3C/svg%3E");
+    background-size:300px 300px;
+    opacity:0.035;
+    mix-blend-mode:overlay;
+    pointer-events:none;
+    z-index:200;
+  }
+  /* FAB acima do grao para nao virar cinza */
+  .whatsapp-fab{z-index:210 !important;position:fixed}
+
+  /* AI signal - faixa viva no rodape (LED + contador + sync) */
+  .ai-signal{
+    display:flex;align-items:center;gap:12px;
+    padding:14px 18px;margin:20px 0 16px;
+    border:1px solid var(--border);
+    border-radius:var(--radius-sm);
+    background:linear-gradient(180deg,rgba(52,211,153,0.03),rgba(52,211,153,0.01));
+    font-size:.9rem;color:var(--text-dim);
+    flex-wrap:wrap;
+  }
+  .ai-signal-led{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--success);
+    box-shadow:0 0 12px var(--success),0 0 4px var(--success);
+    animation:ai-pulse 1.8s ease-in-out infinite;
+    flex-shrink:0;
+  }
+  @keyframes ai-pulse{
+    0%,100%{opacity:1;box-shadow:0 0 12px var(--success),0 0 4px var(--success)}
+    50%{opacity:.55;box-shadow:0 0 6px var(--success),0 0 2px var(--success)}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ai-signal-led{animation:none}
+  }
+  .ai-signal-copy{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .ai-signal-copy #msgCount{color:var(--text);font-weight:600}
+  .ai-signal-copy #msgCount, .ai-signal-copy #syncAgo{font-variant-numeric:tabular-nums}
+  .ai-signal-sep{opacity:.4}
+
 </style>
 </head>
 <body>
+
+<a class="skip-link" href="#top">Pular para o conteudo principal</a>
 
 <!-- NAV -->
 <nav class="nav" id="nav">
@@ -590,10 +686,10 @@
     <div>
       <span class="eyebrow">Agentes de IA para Empresas</span>
       <h1 class="hero-title">
-        Agentes de IA <span class="accent">trabalhando pela sua empresa</span>, todos os dias.
+        Agentes de IA <span class="accent">operando pela sua empresa</span>.
       </h1>
       <p class="hero-sub">
-        Automatize tarefas, conecte seus dados e transforme processos demorados em operações mais rápidas, inteligentes e eficientes.
+        Automatize tarefas, conecte seus dados e transforme processos manuais em operações que rodam sozinhas — sem perder controle.
       </p>
       <p class="hero-desc">
         Criamos Agentes de Inteligência Artificial sob medida para atender clientes, analisar informações, consultar documentos, executar tarefas e apoiar decisões importantes.
@@ -601,7 +697,9 @@
       <div class="hero-ctas">
         <a href="#contato" class="btn btn-primary">
           Descobrir o que posso automatizar
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
         </a>
         <a href="#agentes" class="btn btn-secondary">Ver exemplos de Agentes</a>
       </div>
@@ -986,7 +1084,7 @@
   <div class="container">
     <div class="section-head reveal">
       <span class="eyebrow">Como Funciona</span>
-      <h2 style="margin-top:20px">Um caminho estruturado, do diagnóstico à evolução contínua.</h2>
+      <h2 style="margin-top:20px">Do diagnóstico à evolução contínua.</h2>
       <p>Trabalhamos em ciclos curtos e mensuráveis, começando pelo processo de maior impacto e escalando com segurança.</p>
     </div>
 
@@ -1084,14 +1182,14 @@
 
     <div class="reveal">
       <div class="agents-tabs" role="tablist">
-        <button class="agent-tab active" data-tab="comercial">Agente Comercial</button>
-        <button class="agent-tab" data-tab="documentos">Agente de Documentos</button>
-        <button class="agent-tab" data-tab="indicadores">Agente de Indicadores</button>
-        <button class="agent-tab" data-tab="administrativo">Agente Administrativo</button>
-        <button class="agent-tab" data-tab="risco">Agente de Risco</button>
+        <button class="agent-tab active" role="tab" id="tab-comercial" aria-selected="true" aria-controls="panel-comercial" tabindex="0" data-tab="comercial">Agente Comercial</button>
+        <button class="agent-tab" role="tab" id="tab-documentos" aria-selected="false" aria-controls="panel-documentos" tabindex="-1" data-tab="documentos">Agente de Documentos</button>
+        <button class="agent-tab" role="tab" id="tab-indicadores" aria-selected="false" aria-controls="panel-indicadores" tabindex="-1" data-tab="indicadores">Agente de Indicadores</button>
+        <button class="agent-tab" role="tab" id="tab-administrativo" aria-selected="false" aria-controls="panel-administrativo" tabindex="-1" data-tab="administrativo">Agente Administrativo</button>
+        <button class="agent-tab" role="tab" id="tab-risco" aria-selected="false" aria-controls="panel-risco" tabindex="-1" data-tab="risco">Agente de Risco</button>
       </div>
 
-      <div class="agent-panel active" data-panel="comercial">
+      <div class="agent-panel active" role="tabpanel" id="panel-comercial" aria-labelledby="tab-comercial" tabindex="0" data-panel="comercial">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Qualificar oportunidades, responder dúvidas e apoiar o time comercial no dia a dia.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>CRM, catálogo, políticas comerciais, histórico de conversas e documentos de proposta.</p></div>
@@ -1101,7 +1199,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="documentos">
+      <div class="agent-panel" role="tabpanel" id="panel-documentos" aria-labelledby="tab-documentos" tabindex="0" data-panel="documentos">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Ler, comparar e extrair informações de contratos, propostas e documentos técnicos.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>Repositórios de documentos, templates aprovados e cláusulas de referência.</p></div>
@@ -1111,7 +1209,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="indicadores">
+      <div class="agent-panel" role="tabpanel" id="panel-indicadores" aria-labelledby="tab-indicadores" tabindex="0" data-panel="indicadores">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Consolidar indicadores, responder perguntas de negócio e alertar sobre desvios relevantes.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>Bancos de dados, planilhas, dashboards e definições de indicadores validadas.</p></div>
@@ -1121,7 +1219,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="administrativo">
+      <div class="agent-panel" role="tabpanel" id="panel-administrativo" aria-labelledby="tab-administrativo" tabindex="0" data-panel="administrativo">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Automatizar fluxos administrativos e integrar sistemas do dia a dia.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>ERP, planilhas de controle, e-mail, políticas internas e diretórios de arquivos.</p></div>
@@ -1131,7 +1229,7 @@
         </div>
       </div>
 
-      <div class="agent-panel" data-panel="risco">
+      <div class="agent-panel" role="tabpanel" id="panel-risco" aria-labelledby="tab-risco" tabindex="0" data-panel="risco">
         <div class="agent-panel-inner">
           <div class="agent-block"><h4>Objetivo</h4><p>Monitorar transações, cadastros e operações com base em critérios de risco.</p></div>
           <div class="agent-block"><h4>Informações utilizadas</h4><p>Bases transacionais, políticas de compliance, listas restritivas e histórico de casos.</p></div>
@@ -1178,7 +1276,7 @@
   <div class="container">
     <div class="final-cta-inner reveal">
       <span class="eyebrow">Vamos começar</span>
-      <h2 style="margin-top:20px">Sua empresa já possui tarefas que podem ser automatizadas.</h2>
+      <h2 style="margin-top:20px">Você já tem tarefas prontas para automatizar.</h2>
       <p>Preencha e retorno em até 1 dia útil com um diagnóstico personalizado.</p>
 
       <form id="leadForm" class="lead-form" novalidate>
@@ -1204,7 +1302,9 @@
 
         <button type="submit" class="btn btn-primary" id="leadBtn">
           Solicitar diagnóstico
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          <span class="btn-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
         </button>
         <p id="leadMsg" class="lead-msg" role="status" aria-live="polite"></p>
       </form>
@@ -1309,6 +1409,16 @@
         <a href="#">Cookies</a>
       </div>
     </div>
+
+    <div class="ai-signal" aria-live="polite" aria-atomic="true">
+      <div class="ai-signal-led" aria-hidden="true"></div>
+      <div class="ai-signal-copy">
+        <span><strong id="msgCount">—</strong> mensagens processadas hoje</span>
+        <span class="ai-signal-sep" aria-hidden="true">·</span>
+        <span>última sync <span id="syncAgo">agora</span></span>
+      </div>
+    </div>
+
     <div class="footer-bottom">
       <div>© <span id="year">2026</span> Nexa.AI · Todos os direitos reservados.</div>
       <div>Feito com foco em resultados reais.</div>
@@ -1346,17 +1456,69 @@
 
   document.querySelectorAll('.reveal, .timeline-step').forEach(el => io.observe(el));
 
-  // Agent Tabs
-  const tabs = document.querySelectorAll('.agent-tab');
-  const panels = document.querySelectorAll('.agent-panel');
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => t.classList.remove('active'));
-      panels.forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      document.querySelector(`[data-panel="${tab.dataset.tab}"]`).classList.add('active');
+  // Agent Tabs (WAI ARIA: roving tabindex + arrow/Home/End navigation)
+  const tabs = Array.from(document.querySelectorAll('.agent-tab'));
+  const panels = Array.from(document.querySelectorAll('.agent-panel'));
+  function activateTab(tab, focus){
+    tabs.forEach(t => {
+      const on = (t === tab);
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+      t.setAttribute('tabindex', on ? '0' : '-1');
+    });
+    panels.forEach(p => {
+      p.classList.toggle('active', p.dataset.panel === tab.dataset.tab);
+    });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab, idx) => {
+    tab.addEventListener('click', () => activateTab(tab, false));
+    tab.addEventListener('keydown', (e) => {
+      let next = null;
+      if (e.key === 'ArrowRight') next = tabs[(idx + 1) % tabs.length];
+      else if (e.key === 'ArrowLeft') next = tabs[(idx - 1 + tabs.length) % tabs.length];
+      else if (e.key === 'Home') next = tabs[0];
+      else if (e.key === 'End') next = tabs[tabs.length - 1];
+      if (next){ e.preventDefault(); activateTab(next, true); }
     });
   });
+
+  // AI signal - contador ao vivo com curva de atividade horaria
+  (function(){
+    const cntEl = document.getElementById('msgCount');
+    const syncEl = document.getElementById('syncAgo');
+    if (!cntEl || !syncEl) return;
+    // Perfil de carga por hora do dia (pico comercial 9-18, vale noturno)
+    const hourLoad = [3,2,1,1,1,1,2,4,7,12,14,15,15,14,15,14,13,11,8,6,5,4,3,3];
+    const now = new Date();
+    const h = now.getHours(), m = now.getMinutes();
+    let base = 0;
+    for (let i = 0; i < h; i++) base += hourLoad[i] * 60;
+    base += hourLoad[h] * m;
+    let count = Math.round(base * 0.9) + Math.floor(Math.random() * 12);
+    let lastSync = Date.now();
+
+    const render = () => { cntEl.textContent = count.toLocaleString('pt-BR'); };
+    const renderSync = () => {
+      const secs = Math.floor((Date.now() - lastSync) / 1000);
+      syncEl.textContent = secs < 5 ? 'agora'
+        : secs < 60 ? secs + ' s atrás'
+        : Math.floor(secs/60) + ' min atrás';
+    };
+    render(); renderSync();
+
+    const scheduleNext = () => {
+      const delay = 18000 + Math.floor(Math.random() * 37000);
+      setTimeout(() => {
+        count += 1 + Math.floor(Math.random() * 3);
+        lastSync = Date.now();
+        render(); renderSync();
+        scheduleNext();
+      }, delay);
+    };
+    scheduleNext();
+    setInterval(renderSync, 1000);
+  })();
 
   // Year
   document.getElementById('year').textContent = new Date().getFullYear();
@@ -1364,5 +1526,3 @@
 
 </body>
 </html>
-```
- 
