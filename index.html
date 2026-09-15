@@ -154,6 +154,17 @@
   .nav.scrolled{border-color:var(--border);background:rgba(5,9,20,.85)}
   .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
   .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:-.01em}
+  .logo-video{
+    width:40px;height:40px;border-radius:8px;
+    object-fit:cover;display:block;
+    background:var(--surface);
+    box-shadow:0 0 0 1px rgba(148,163,184,0.12);
+  }
+  .logo-text{white-space:nowrap}
+  @media (prefers-reduced-motion: reduce){
+    /* JS complementa com .pause() para congelar o video no poster */
+    .logo-video{filter:none}
+  }
   .logo-mark{
     width:32px;height:32px;border-radius:9px;
     background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
@@ -713,9 +724,15 @@
 <!-- NAV -->
 <nav class="nav" id="nav">
   <div class="container nav-inner">
-    <a href="#top" class="logo">
-      <div class="logo-mark">◆</div>
-      <span>Nexa<span style="color:var(--accent)">.</span>AI</span>
+    <a href="#top" class="logo" aria-label="Nexa.AI — início">
+      <video class="logo-video" autoplay muted loop playsinline
+             poster="assets/logo-nexa-poster.png"
+             width="40" height="40" aria-hidden="true">
+        <source src="assets/logo-nexa.webm" type="video/webm">
+        <source src="assets/logo-nexa.mp4" type="video/mp4">
+        <img src="assets/logo-nexa-poster.png" alt="" width="40" height="40">
+      </video>
+      <span class="logo-text">Nexa<span style="color:var(--accent)">.</span>AI</span>
     </a>
     <div class="nav-links" id="navLinks">
       <a href="#solucoes">Soluções</a>
@@ -1570,6 +1587,20 @@
     };
     scheduleNext();
     setInterval(renderSync, 1000);
+  })();
+
+  // Logo video: respeita prefers-reduced-motion e faz retry de autoplay
+  (function(){
+    const v = document.querySelector('.logo-video');
+    if (!v) return;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce){ v.pause(); return; }
+    // alguns browsers/mobiles precisam de retry apos user gesture
+    const tryPlay = () => v.play().catch(() => {
+      const kick = () => { v.play(); document.removeEventListener('pointerdown', kick); };
+      document.addEventListener('pointerdown', kick, { once: true });
+    });
+    tryPlay();
   })();
 
   // Spotlight-on-hover nos .solution-card (radial-gradient segue o mouse)
