@@ -286,8 +286,13 @@
   }
 
   /* Solutions grid */
+  /* Bento grid: 4 colunas, 1 destaque 2x2 + 5 pequenos */
   .solutions-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:20px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    grid-auto-rows:minmax(220px,auto);
+    grid-auto-flow:dense;
+    gap:20px;
   }
   .solution-card{
     padding:32px;border-radius:var(--radius-lg);
@@ -295,12 +300,32 @@
     border:1px solid var(--border);
     position:relative;overflow:hidden;
     transition:transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+    /* Vars atualizadas pelo JS para o spotlight seguir o mouse */
+    --mx:50%;--my:50%;
   }
+  .solution-card--hero{
+    grid-column:span 2;grid-row:span 2;
+    display:flex;flex-direction:column;
+  }
+  .solution-card--hero h3{font-size:1.55rem;margin-bottom:12px}
+  .solution-card--hero p{font-size:1.02rem;color:var(--text);margin-bottom:20px}
+  .solution-card--hero .solution-example{margin-top:auto}
+  /* Spotlight radial-gradient seguindo o cursor via --mx/--my */
   .solution-card::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(360px circle at var(--mx) var(--my),
+                               var(--accent-soft) 0%,
+                               transparent 60%);
+    opacity:0;transition:opacity .35s ease;pointer-events:none;
+    mix-blend-mode:screen;
+  }
+  /* Barra fina no topo do card - mantida do design original */
+  .solution-card::after{
     content:"";position:absolute;top:0;left:0;right:0;height:1px;
     background:linear-gradient(90deg,transparent,rgba(34,211,238,.4),transparent);
-    opacity:0;transition:opacity .3s;
+    opacity:0;transition:opacity .3s;pointer-events:none;
   }
+  .solution-card:hover::after{opacity:1}
   .solution-card:hover{
     transform:translateY(-4px);
     border-color:rgba(34,211,238,.3);
@@ -321,7 +346,14 @@
     font-size:.82rem;color:var(--text-muted);
   }
   .solution-example strong{color:var(--text);font-weight:500}
-  @media(max-width:900px){.solutions-grid{grid-template-columns:1fr}}
+  @media(max-width:1100px){
+    .solutions-grid{grid-template-columns:repeat(3,1fr)}
+    .solution-card--hero{grid-column:span 3;grid-row:auto}
+  }
+  @media(max-width:700px){
+    .solutions-grid{grid-template-columns:1fr}
+    .solution-card--hero{grid-column:auto}
+  }
 
   /* Integrations */
   .integrations-section{background:var(--bg-1);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
@@ -891,9 +923,9 @@
     </div>
 
     <div class="solutions-grid">
-      <div class="solution-card reveal">
-        <div class="solution-icon">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <div class="solution-card solution-card--hero reveal">
+        <div class="solution-icon" style="width:56px;height:56px">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
         </div>
         <h3>Atendimento e vendas</h3>
         <p>Respostas rápidas, qualificação de leads e acompanhamento ativo, com contexto sobre cada cliente.</p>
@@ -1519,6 +1551,17 @@
     scheduleNext();
     setInterval(renderSync, 1000);
   })();
+
+  // Spotlight-on-hover nos .solution-card (radial-gradient segue o mouse)
+  document.querySelectorAll('.solution-card').forEach(card => {
+    card.addEventListener('pointermove', (e) => {
+      const r = card.getBoundingClientRect();
+      const mx = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+      const my = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+      card.style.setProperty('--mx', mx + '%');
+      card.style.setProperty('--my', my + '%');
+    });
+  });
 
   // Year
   document.getElementById('year').textContent = new Date().getFullYear();
