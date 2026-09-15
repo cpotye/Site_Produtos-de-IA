@@ -517,22 +517,42 @@
   }
 
   /* Testimonials */
-  .testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  /* Masonry via CSS columns - reflow natural, 1 grande + 2 pequenos */
+  .testimonials-grid{
+    columns:3;column-gap:20px;
+  }
   .testimonial-card{
     padding:32px;border-radius:var(--radius-lg);
     background:var(--surface);border:1px solid var(--border);
     position:relative;
+    break-inside:avoid;
+    margin-bottom:20px;
+    display:inline-block;width:100%;
+    /* card destaque (primeiro) fica maior por conteudo, respeitando column-fit */
   }
+  .testimonial-card:first-child{padding:40px;background:linear-gradient(155deg,var(--surface) 0%,var(--surface-2) 100%)}
+  .testimonial-card:first-child p{font-size:1.05rem}
   .testimonial-card .quote-mark{
     font-family:var(--font-display);font-size:3rem;line-height:1;
     color:var(--accent);opacity:.4;margin-bottom:12px;
   }
   .testimonial-card p{font-size:.95rem;color:var(--text);line-height:1.6;margin-bottom:20px}
+  /* Avatar + meta lado a lado */
   .testimonial-meta{
     padding-top:20px;border-top:1px solid var(--border);
     font-size:.8rem;color:var(--text-muted);
+    display:flex;align-items:center;gap:12px;
   }
-  @media(max-width:900px){.testimonials-grid{grid-template-columns:1fr}}
+  .testimonial-avatar{
+    width:40px;height:40px;border-radius:50%;
+    display:grid;place-items:center;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent) 0%,var(--accent-2) 100%);
+    color:var(--bg-0);font-family:var(--font-display);
+    font-weight:700;font-size:.9rem;letter-spacing:.02em;
+    box-shadow:0 4px 12px -4px rgba(34,211,238,.5);
+  }
+  @media(max-width:900px){.testimonials-grid{columns:2}}
+  @media(max-width:600px){.testimonials-grid{columns:1}}
 
   /* Final CTA */
   .final-cta{
@@ -1324,17 +1344,17 @@
       <div class="testimonial-card reveal">
         <div class="quote-mark">"</div>
         <p>Automatizamos o primeiro processo em poucas semanas e a equipe passou a dedicar mais tempo ao que realmente exige análise.</p>
-        <div class="testimonial-meta">Relato — Liderança de Operações</div>
+        <div class="testimonial-meta"><div class="testimonial-avatar" aria-hidden="true">LO</div><span>Relato — Liderança de Operações</span></div>
       </div>
       <div class="testimonial-card reveal reveal-delay-1">
         <div class="quote-mark">"</div>
         <p>A abordagem foi consultiva desde o começo. Fomos avançando com clareza sobre riscos, escopo e onde a IA realmente entregaria valor.</p>
-        <div class="testimonial-meta">Relato — Área de Tecnologia</div>
+        <div class="testimonial-meta"><div class="testimonial-avatar" aria-hidden="true">AT</div><span>Relato — Área de Tecnologia</span></div>
       </div>
       <div class="testimonial-card reveal reveal-delay-2">
         <div class="quote-mark">"</div>
         <p>Ter as informações consolidadas todos os dias, sem depender de várias planilhas, mudou nossa reunião de acompanhamento.</p>
-        <div class="testimonial-meta">Relato — Gestão Comercial</div>
+        <div class="testimonial-meta"><div class="testimonial-avatar" aria-hidden="true">GC</div><span>Relato — Gestão Comercial</span></div>
       </div>
     </div>
   </div>
