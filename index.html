@@ -426,6 +426,31 @@
     content:"";position:absolute;left:12px;top:0;bottom:0;width:1px;
     background:linear-gradient(180deg,transparent 0%,var(--border-strong) 12%,var(--border-strong) 88%,transparent 100%);
   }
+  /* Progress bar preenche conforme o scroll passa pela timeline */
+  .timeline::after{
+    content:"";position:absolute;left:11px;top:0;bottom:0;width:3px;
+    background:linear-gradient(180deg,var(--accent) 0%,var(--accent-2) 100%);
+    box-shadow:0 0 12px rgba(34,211,238,.6),0 0 4px rgba(34,211,238,.4);
+    /* Fallback: escondido em browsers sem scroll-driven animations */
+    opacity:0;
+    border-radius:2px;
+  }
+  @supports (animation-timeline: view()){
+    .timeline::after{
+      opacity:1;
+      transform-origin:top;
+      transform:scaleY(0);
+      animation:timeline-fill linear both;
+      animation-timeline:view();
+      animation-range:entry 20% cover 60%;
+    }
+    @keyframes timeline-fill{
+      to{transform:scaleY(1)}
+    }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .timeline::after{animation:none;transform:scaleY(1);opacity:.6}
+  }
   .timeline-step{
     position:relative;padding:24px 0 40px 40px;
     opacity:0;transform:translateY(20px);
