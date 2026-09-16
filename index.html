@@ -770,14 +770,17 @@
     animation-timing-function:cubic-bezier(.2,.7,.2,1);
   }
 
-  /* ===== LIVE LAYER: agente ao vivo no hero ===== */
-  .msg-bubble{opacity:0;transition:opacity .5s ease, transform .5s ease;transform:translateX(-10px)}
-  .msg-bubble.live-show{opacity:1;transform:translateX(0)}
-  .badge-live{opacity:0;transition:opacity .35s ease;transform-box:fill-box;transform-origin:center}
-  .badge-live.live-show{opacity:1}
-  /* Node ativo (nucleo, ou node consultado): drop-shadow mais forte + escala sutil */
-  .node-g{transition:filter .4s ease, transform .4s ease;transform-origin:center;transform-box:fill-box}
-  .node-g.live-active{filter:drop-shadow(0 0 18px rgba(34,211,238,.55));transform:translateY(-1px)}
+  /* ===== LIVE LAYER: agente ao vivo no hero =====
+     Nota: aplicamos opacity nos FILHOS (rect, circle, text) e nao no <g> pai,
+     porque Chrome tem inconsistencia com CSS opacity em <g> SVG que ja tem
+     um atributo transform. Nos filhos funciona sempre. */
+  .msg-bubble > *{opacity:0;transition:opacity .5s ease}
+  .msg-bubble.live-show > *{opacity:1}
+  .badge-live > *{opacity:0;transition:opacity .35s ease}
+  .badge-live.live-show > *{opacity:1}
+  /* Node ativo (nucleo, ou node consultado): drop-shadow mais forte */
+  .node-g{transition:filter .4s ease}
+  .node-g.live-active{filter:drop-shadow(0 0 18px rgba(34,211,238,.55))}
   /* Flow line ativa: opacity 1, stroke mais forte, dash animation mais rapida */
   .flow-line{opacity:.35;transition:opacity .4s ease,stroke-width .3s ease}
   .flow-line.live-active{opacity:1;stroke-width:2;stroke:#22d3ee;animation-duration:1.4s}
@@ -789,7 +792,7 @@
   }
   @media (prefers-reduced-motion: reduce){
     .flow-line{opacity:.7}
-    .msg-bubble,.badge-live{display:none}
+    .msg-bubble > *, .badge-live > *{display:none}
     .agent-core.live-pulsing{animation:none}
   }
 
