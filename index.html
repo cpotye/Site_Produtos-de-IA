@@ -771,13 +771,15 @@
   }
 
   /* ===== LIVE LAYER: agente ao vivo no hero =====
-     Nota: aplicamos opacity nos FILHOS (rect, circle, text) e nao no <g> pai,
-     porque Chrome tem inconsistencia com CSS opacity em <g> SVG que ja tem
-     um atributo transform. Nos filhos funciona sempre. */
-  .msg-bubble > *{opacity:0;transition:opacity .5s ease}
-  .msg-bubble.live-show > *{opacity:1}
-  .badge-live > *{opacity:0;transition:opacity .35s ease}
-  .badge-live.live-show > *{opacity:1}
+     Usamos VISIBILITY em vez de opacity: bug do Chrome faz CSS opacity nao
+     aplicar em SVG <rect>/<text>/<circle> quando ha stacking context com
+     mix-blend-mode do body::after (grao). Mesmo com !important nao vencia.
+     Visibility contorna o bug. Sem fade suave, mas o timing das transicoes
+     ainda entrega a sensacao de "algo aconteceu" via mudanca de estado. */
+  .msg-bubble > *{visibility:hidden}
+  .msg-bubble.live-show > *{visibility:visible}
+  .badge-live > *{visibility:hidden}
+  .badge-live.live-show > *{visibility:visible}
   /* Node ativo (nucleo, ou node consultado): drop-shadow mais forte */
   .node-g{transition:filter .4s ease}
   .node-g.live-active{filter:drop-shadow(0 0 18px rgba(34,211,238,.55))}
@@ -792,7 +794,7 @@
   }
   @media (prefers-reduced-motion: reduce){
     .flow-line{opacity:.7}
-    .msg-bubble > *, .badge-live > *{display:none}
+    .msg-bubble > *, .badge-live > *{visibility:hidden}
     .agent-core.live-pulsing{animation:none}
   }
 
