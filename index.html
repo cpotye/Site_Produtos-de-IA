@@ -769,6 +769,30 @@
     animation-duration:.32s;
     animation-timing-function:cubic-bezier(.2,.7,.2,1);
   }
+
+  /* ===== LIVE LAYER: agente ao vivo no hero ===== */
+  .msg-bubble{opacity:0;transition:opacity .5s ease, transform .5s ease;transform:translateX(-10px)}
+  .msg-bubble.live-show{opacity:1;transform:translateX(0)}
+  .badge-live{opacity:0;transition:opacity .35s ease;transform-box:fill-box;transform-origin:center}
+  .badge-live.live-show{opacity:1}
+  /* Node ativo (nucleo, ou node consultado): drop-shadow mais forte + escala sutil */
+  .node-g{transition:filter .4s ease, transform .4s ease;transform-origin:center;transform-box:fill-box}
+  .node-g.live-active{filter:drop-shadow(0 0 18px rgba(34,211,238,.55));transform:translateY(-1px)}
+  /* Flow line ativa: opacity 1, stroke mais forte, dash animation mais rapida */
+  .flow-line{opacity:.35;transition:opacity .4s ease,stroke-width .3s ease}
+  .flow-line.live-active{opacity:1;stroke-width:2;stroke:#22d3ee;animation-duration:1.4s}
+  /* Nucleo pulsa mais forte quando processando */
+  .agent-core.live-pulsing{animation:core-boost 1.2s ease-in-out infinite}
+  @keyframes core-boost{
+    0%,100%{filter:drop-shadow(0 0 24px rgba(34,211,238,.45))}
+    50%{filter:drop-shadow(0 0 40px rgba(34,211,238,.85))}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .flow-line{opacity:.7}
+    .msg-bubble,.badge-live{display:none}
+    .agent-core.live-pulsing{animation:none}
+  }
+
 </style>
 </head>
 <body>
@@ -845,14 +869,14 @@
 
         <!-- Flow lines -->
         <g>
-          <path class="flow-line" d="M 100 90 Q 200 130, 260 220"/>
-          <path class="flow-line" d="M 460 90 Q 380 140, 320 220"/>
-          <path class="flow-line" d="M 80 260 Q 170 260, 240 260"/>
-          <path class="flow-line" d="M 480 260 Q 400 260, 340 260"/>
-          <path class="flow-line" d="M 100 430 Q 200 380, 260 310"/>
-          <path class="flow-line" d="M 460 430 Q 380 380, 320 310"/>
-          <path class="flow-line" d="M 200 470 Q 260 400, 280 320"/>
-          <path class="flow-line" d="M 360 470 Q 300 400, 290 320"/>
+          <path class="flow-line" data-node="whatsapp" d="M 100 90 Q 200 130, 260 220"/>
+          <path class="flow-line" data-node="teams" d="M 460 90 Q 380 140, 320 220"/>
+          <path class="flow-line" data-node="email" d="M 80 260 Q 170 260, 240 260"/>
+          <path class="flow-line" data-node="crm" d="M 480 260 Q 400 260, 340 260"/>
+          <path class="flow-line" data-node="planilhas" d="M 100 430 Q 200 380, 260 310"/>
+          <path class="flow-line" data-node="banco" d="M 460 430 Q 380 380, 320 310"/>
+          <path class="flow-line" data-node="documentos" d="M 200 470 Q 260 400, 280 320"/>
+          <path class="flow-line" data-node="dashboards" d="M 360 470 Q 300 400, 290 320"/>
         </g>
 
         <!-- Central Agent Core -->
@@ -865,7 +889,7 @@
         </g>
 
         <!-- Node: WhatsApp -->
-        <g transform="translate(35,55)">
+        <g class="node-g" data-node="whatsapp" transform="translate(35,55)">
           <rect class="node-card" width="130" height="60" rx="12"/>
           <circle cx="26" cy="30" r="14" fill="#25D366" opacity="0.15"/>
           <path d="M18 30 a8 8 0 1 1 4 6.9 l-4 1.1 1.1-4 A8 8 0 0 1 18 30z" fill="#25D366" transform="translate(4,-8)"/>
@@ -874,7 +898,7 @@
         </g>
 
         <!-- Node: Teams -->
-        <g transform="translate(395,55)">
+        <g class="node-g" data-node="teams" transform="translate(395,55)">
           <rect class="node-card" width="130" height="60" rx="12"/>
           <circle cx="26" cy="30" r="14" fill="#5059C9" opacity="0.18"/>
           <circle cx="26" cy="30" r="14" fill="none" stroke="#7c8bff" stroke-width="1.2" opacity="0.85"/>
@@ -884,7 +908,7 @@
         </g>
 
         <!-- Node: E-mail -->
-        <g transform="translate(0,235)">
+        <g class="node-g" data-node="email" transform="translate(0,235)">
           <rect class="node-card" width="120" height="56" rx="12"/>
           <rect x="14" y="18" width="22" height="18" rx="3" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
           <path d="M14 20 l11 8 l11-8" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
@@ -893,7 +917,7 @@
         </g>
 
         <!-- Node: CRM -->
-        <g transform="translate(440,235)">
+        <g class="node-g" data-node="crm" transform="translate(440,235)">
           <rect class="node-card" width="120" height="56" rx="12"/>
           <circle cx="24" cy="27" r="9" fill="none" stroke="#34d399" stroke-width="1.5"/>
           <circle cx="24" cy="24" r="3" fill="#34d399"/>
@@ -903,7 +927,7 @@
         </g>
 
         <!-- Node: Planilhas -->
-        <g transform="translate(35,415)">
+        <g class="node-g" data-node="planilhas" transform="translate(35,415)">
           <rect class="node-card" width="130" height="60" rx="12"/>
           <rect x="14" y="20" width="24" height="20" rx="2" fill="none" stroke="#34d399" stroke-width="1.5"/>
           <line x1="14" y1="27" x2="38" y2="27" stroke="#34d399" stroke-width="1"/>
@@ -915,7 +939,7 @@
         </g>
 
         <!-- Node: Banco de Dados -->
-        <g transform="translate(395,415)">
+        <g class="node-g" data-node="banco" transform="translate(395,415)">
           <rect class="node-card" width="130" height="60" rx="12"/>
           <ellipse cx="26" cy="20" rx="10" ry="3" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
           <path d="M16 20 v18 c0 1.5 4.5 3 10 3 s10-1.5 10-3 v-18" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
@@ -925,7 +949,7 @@
         </g>
 
         <!-- Node: Documentos -->
-        <g transform="translate(155,470)">
+        <g class="node-g" data-node="documentos" transform="translate(155,470)">
           <rect class="node-card" width="110" height="40" rx="10"/>
           <rect x="12" y="12" width="14" height="16" rx="1" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
           <line x1="15" y1="17" x2="23" y2="17" stroke="#fbbf24" stroke-width="1"/>
@@ -935,13 +959,35 @@
         </g>
 
         <!-- Node: Dashboards -->
-        <g transform="translate(295,470)">
+        <g class="node-g" data-node="dashboards" transform="translate(295,470)">
           <rect class="node-card" width="110" height="40" rx="10"/>
           <rect x="12" y="12" width="16" height="16" rx="2" fill="none" stroke="#22d3ee" stroke-width="1.5"/>
           <line x1="15" y1="24" x2="15" y2="20" stroke="#22d3ee" stroke-width="1.5"/>
           <line x1="19" y1="24" x2="19" y2="16" stroke="#22d3ee" stroke-width="1.5"/>
           <line x1="23" y1="24" x2="23" y2="18" stroke="#22d3ee" stroke-width="1.5"/>
           <text x="36" y="24" font-family="Inter" font-size="10" font-weight="600" fill="#e6ecf5">Dashboards</text>
+        </g>
+
+        <!-- LIVE LAYER: agente operando (loop 12s) -->
+        <g id="live-layer">
+          <g class="msg-bubble msg-in" transform="translate(35,135)">
+            <rect width="230" height="32" rx="10" fill="#0d1426" stroke="#25D366" stroke-width="1.2"/>
+            <circle cx="12" cy="16" r="3" fill="#25D366"/>
+            <text id="msgTextIn" x="24" y="20" font-family="Inter" font-size="11" fill="#e6ecf5">—</text>
+          </g>
+          <g class="msg-bubble msg-out" transform="translate(35,175)">
+            <rect width="260" height="32" rx="10" fill="#0d1426" stroke="#22d3ee" stroke-width="1.2"/>
+            <circle cx="12" cy="16" r="3" fill="#22d3ee"/>
+            <text id="msgTextOut" x="24" y="20" font-family="Inter" font-size="11" fill="#e6ecf5">—</text>
+          </g>
+          <g class="badge-live badge-processing" transform="translate(280,340)">
+            <rect x="-42" y="-9" width="84" height="18" rx="9" fill="#050914" stroke="#22d3ee" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" font-family="Inter" font-size="9" fill="#22d3ee">processando…</text>
+          </g>
+          <g class="badge-live badge-found" transform="translate(500,220)">
+            <rect x="-46" y="-9" width="92" height="18" rx="9" fill="#050914" stroke="#34d399" stroke-width="1"/>
+            <text x="0" y="4" text-anchor="middle" font-family="Inter" font-size="9" fill="#34d399">encontrado ✓</text>
+          </g>
         </g>
       </svg>
     </div>
@@ -1685,6 +1731,156 @@
       card.style.setProperty('--my', my + '%');
     });
   });
+
+  // ===== LIVE HERO: agente ao vivo (loop 12s, 3 cenarios) =====
+  (function(){
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return;
+
+    const svg = document.querySelector('.agent-svg');
+    if (!svg) return;
+
+    const scenarios = [
+      {
+        q: "Qual o status do pedido 4521?",
+        route: ["crm", "planilhas"],
+        a: "Pedido enviado ontem, entrega prevista sexta."
+      },
+      {
+        q: "Qual o saldo de férias do time?",
+        route: ["banco", "documentos"],
+        a: "Time tem 78 dias no total. Detalhes por e-mail."
+      },
+      {
+        q: "Preciso do fechamento de outubro",
+        route: ["banco", "dashboards"],
+        a: "PDF gerado. Total: R$ 2,4M (+12% MoM)."
+      }
+    ];
+
+    const msgIn = svg.querySelector('.msg-in');
+    const msgOut = svg.querySelector('.msg-out');
+    const msgTextIn = svg.querySelector('#msgTextIn');
+    const msgTextOut = svg.querySelector('#msgTextOut');
+    const badgeProc = svg.querySelector('.badge-processing');
+    const badgeFound = svg.querySelector('.badge-found');
+    const core = svg.querySelector('.agent-core');
+    const flowByNode = name => svg.querySelector(`.flow-line[data-node="${name}"]`);
+    const nodeGByName = name => svg.querySelector(`.node-g[data-node="${name}"]`);
+
+    // helpers
+    const show = el => el && el.classList.add('live-show');
+    const hide = el => el && el.classList.remove('live-show');
+    const activate = el => el && el.classList.add('live-active');
+    const deactivate = el => el && el.classList.remove('live-active');
+    const clearAll = () => {
+      hide(msgIn); hide(msgOut); hide(badgeProc); hide(badgeFound);
+      core && core.classList.remove('live-pulsing');
+      svg.querySelectorAll('.flow-line.live-active').forEach(deactivate);
+      svg.querySelectorAll('.node-g.live-active').forEach(deactivate);
+    };
+
+    // Posicionar badge-found perto do node ativo do cenario
+    const moveBadgeFoundTo = (nodeName) => {
+      const positions = {
+        crm:        [500, 220],
+        planilhas:  [100, 400],
+        banco:      [460, 400],
+        documentos: [210, 455],
+        dashboards: [350, 455],
+        email:      [60,  220],
+        teams:      [460, 40]
+      };
+      const [x, y] = positions[nodeName] || [500, 220];
+      badgeFound.setAttribute('transform', `translate(${x},${y})`);
+    };
+
+    // Runner de um cenario (12s)
+    let stopped = false;
+    let timeouts = [];
+    const at = (ms, fn) => timeouts.push(setTimeout(() => { if (!stopped) fn(); }, ms));
+    const clearTimers = () => { timeouts.forEach(clearTimeout); timeouts = []; };
+
+    const runScene = (idx) => {
+      clearTimers();
+      clearAll();
+      const sc = scenarios[idx % scenarios.length];
+
+      // 0.2s: pergunta chega
+      at(200, () => {
+        msgTextIn.textContent = sc.q;
+        show(msgIn);
+        activate(nodeGByName('whatsapp'));
+      });
+
+      // 2s: linha WhatsApp -> Core, badge processando
+      at(2000, () => {
+        activate(flowByNode('whatsapp'));
+        core && core.classList.add('live-pulsing');
+        show(badgeProc);
+      });
+
+      // 4s: linha Core -> primeiro destino, node ilumina, badge encontrado
+      at(4000, () => {
+        const target1 = sc.route[0];
+        activate(flowByNode(target1));
+        activate(nodeGByName(target1));
+        moveBadgeFoundTo(target1);
+        show(badgeFound);
+      });
+
+      // 6s: linha Core -> segundo destino
+      at(6000, () => {
+        const target2 = sc.route[1];
+        activate(flowByNode(target2));
+        activate(nodeGByName(target2));
+        hide(badgeFound);
+      });
+
+      // 8s: resposta sai do Core, esconde processando
+      at(8000, () => {
+        hide(msgIn);
+        hide(badgeProc);
+        msgTextOut.textContent = sc.a;
+        show(msgOut);
+      });
+
+      // 10s: fade tudo
+      at(10500, () => {
+        clearAll();
+      });
+
+      // 12s: proximo cenario
+      at(12000, () => runScene(idx + 1));
+    };
+
+    // Iniciar so quando o SVG entra no viewport, pausar quando sai ou aba oculta
+    let currentIdx = 0;
+    let isInView = false;
+
+    const start = () => { stopped = false; runScene(currentIdx); };
+    const stop  = () => { stopped = true; clearTimers(); clearAll(); };
+
+    // IntersectionObserver: pausa fora do viewport
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          isInView = e.isIntersecting;
+          if (isInView && !document.hidden) start();
+          else stop();
+        });
+      }, { threshold: 0.2 });
+      io.observe(svg);
+    } else {
+      start();
+    }
+
+    // Page Visibility: pausa quando aba escondida
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stop();
+      else if (isInView) start();
+    });
+  })();
 
   // Year
   document.getElementById('year').textContent = new Date().getFullYear();
